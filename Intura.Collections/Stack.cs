@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Intura.Collections
 {
@@ -7,6 +8,7 @@ namespace Intura.Collections
     /// (First-In-First-Out) queue.
     /// </summary>
     /// <typeparam name="T">The type for the collection.</typeparam>
+    [DebuggerDisplay("Count = {Count}")]
     public class Stack<T>
     {
         private T[] _storage;
@@ -18,7 +20,7 @@ namespace Intura.Collections
         /// </summary>
         public Stack()
         {
-            _initialCapacity = 100;
+            _initialCapacity = 10;
             _position = -1;
             ResetStorage();
         }
@@ -29,6 +31,9 @@ namespace Intura.Collections
         /// <param name="initialCapacity">The initial capacity of the collection.</param>
         public Stack(int initialCapacity)
         {
+            if (initialCapacity < 1)
+                throw new ArgumentOutOfRangeException(nameof(initialCapacity), "Must be greater than zero.");
+
             _initialCapacity = initialCapacity;
             _position = -1;
             ResetStorage();
@@ -89,9 +94,18 @@ namespace Intura.Collections
             return _storage[_position];
         }
 
+        /// <summary>
+        /// Clear the data from the stack.
+        /// </summary>
+        public void Clear()
+        {
+            Array.Clear(_storage, 0, _storage.Length);
+            _position = -1;
+        }
+
         public bool IsEmpty => _position < 0;
 
-        public int Size => _position < 0 ? 0 : _position+1;
+        public int Count => _position < 0 ? 0 : _position+1;
 
         public int Capacity => _storage.Length;
 
