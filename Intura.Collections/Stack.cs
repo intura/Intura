@@ -20,7 +20,7 @@ namespace Intura.Collections
         {
             _initialCapacity = 100;
             _position = -1;
-            ResetStorage(_initialCapacity);
+            ResetStorage();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Intura.Collections
         {
             _initialCapacity = initialCapacity;
             _position = -1;
-            ResetStorage(_initialCapacity);
+            ResetStorage();
         }
 
         /// <summary>
@@ -68,16 +68,16 @@ namespace Intura.Collections
 
             // If we have emptied the stack then we can reset the array
             if (_position < 0)
-                ResetStorage(_initialCapacity);
+                ResetStorage();
             // Or if the data in the array is half the size, we can shrink it
-            else if (_position < _storage.Length / 2)
+            else if (_position < (_storage.Length / 2) -1)
                 Array.Resize(ref _storage, _storage.Length / 2);
 
             return item;
         }
 
         /// <summary>
-        /// Take a look at the mnext item in the stack.
+        /// Take a look at the next item in the stack.
         /// </summary>
         /// <returns>An object of type T.</returns>
         /// <exception cref="CollectionEmptyException">If the collection is empty an exception will be thrown.</exception>
@@ -95,9 +95,9 @@ namespace Intura.Collections
 
         public int Capacity => _storage.Length;
 
-        private void ResetStorage(int capacity)
+        private void ResetStorage()
         {
-            _storage = new T[capacity];
+            _storage = new T[_initialCapacity];
         }
     }
 }
